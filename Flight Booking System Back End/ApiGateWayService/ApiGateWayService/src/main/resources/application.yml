@@ -1,0 +1,29 @@
+server:
+ port: 8000
+ 
+spring:
+ application:
+  name: API_GATEWAY
+  
+ cloud:
+  gateway:
+   default-filters:
+    - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+   globalcors:
+    corsConfigurations:
+     '[/**]':
+       allowedOrigins: "*"
+       allowedMethods: "*"
+       allowedHeaders: "*"
+   routes:
+   - id: FlightDetailsMicroservice
+     uri:
+      lb://FlightDetailsMicroservice
+     predicates:
+     - Path=/**
+     
+   - id: BookingMicroService
+     uri:
+      lb://BookingMicroService
+     predicates:
+     - Path=/booking/**
